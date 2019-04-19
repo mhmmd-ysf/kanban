@@ -8,7 +8,7 @@
     </div>
     <div class="isi">
       <categories v-for="(task, index) in taskList" :key="index"
-      :header="task.name" :tasks="task.tasks"></categories>
+      :header="task.name" :tasks="task.tasks"></categories> <!-- @change-table="changeTable" -->
     </div>
     <!-- Modal -->
     <div class="modal fade" id="Modal1" tabindex="-1" role="dialog"
@@ -120,10 +120,15 @@ export default {
   created() {
     db.collection('Tasks')
       .onSnapshot((snapshot) => {
+        // console.log('created jalan');
+        // console.log({ taskList: this.taskList, taskData });
         const temp = [];
-        snapshot.docChanges().forEach((change) => {
-          const entry = change.doc.data();
-          const { id } = change.doc;
+        taskData.forEach((item) => {
+          item.tasks = [];
+        });
+        snapshot.forEach((change) => {
+          const entry = change.data();
+          const { id } = change;
           entry.id = id;
           this.taskList.forEach((item) => {
             if (entry.status === item.name) {
@@ -131,7 +136,7 @@ export default {
             }
           });
           temp.push(entry);
-          console.log(temp);
+          // console.log(temp);
           this.tasks = temp;
         });
       });
