@@ -56,6 +56,7 @@
 <script>
 import categories from './components/categories.vue';
 import db from './api/firebase';
+import swal from 'sweetalert';
 
 const taskData = [
   {
@@ -109,7 +110,8 @@ export default {
           this.assigned = '';
           console.log('docref', docref);
           // Buat nutup modal
-          // $('#Modal1').modal('hide');
+          swal('Success!', 'Task added', 'success')
+          $('#Modal1').modal('hide');
         })
         .catch((error) => {
           console.log('error');
